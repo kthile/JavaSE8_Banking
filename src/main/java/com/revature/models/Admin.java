@@ -4,8 +4,8 @@ public class Admin extends Employee {
 	private int accessLevel = 3;
 	private boolean approved = true;
 
-	public Admin(String userName, String password, boolean approved) {
-		super(userName, password, approved);
+	public Admin(String username, String password, boolean approved, String pin, Bank bank) {
+		super(username, password, approved, pin, bank);
 	}
 
 	public void setAccessLevel(int accessLevel) {
@@ -18,7 +18,7 @@ public class Admin extends Employee {
 
 	@Override
 	public String toString() {
-		return "Users [userName=" + userName + ", password=" + password + ", accessLevel=" + this.accessLevel
+		return "Users [userName=" + username + ", password=" + password + ", accessLevel=" + this.accessLevel
 				+ "approved=" + this.approved + "]";
 	}
 }
