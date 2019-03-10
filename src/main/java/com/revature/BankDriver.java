@@ -10,17 +10,13 @@ public class BankDriver {
 
 	static Bank bank = new Bank("Bank of Khang");
 	static User user;
-	static BankAccount acc;
-	static ArrayList<User> unapproved;
 
 	public static void main(String[] args) {
 
 		UserServices userService;
 		Scanner sc = new Scanner(System.in);
-		System.out.println(unapproved);
 
-		 User user = bank.addUser("khang", "password", "1234");
-	
+		bank.addUser("khang", "1234");
 
 		// User curUser;
 		while (true) {
@@ -214,10 +210,10 @@ public class BankDriver {
 
 			choice = sc.nextInt();
 
-			if (choice < 1 || choice > 5) {
+			if (choice < 1 || choice > 6) {
 				System.out.println("Incorrect input. Select 1-5.");
 			}
-		} while (choice < 1 || choice > 5);
+		} while (choice < 1 || choice > 6);
 
 		switch (choice) {
 		case 1:
@@ -234,6 +230,7 @@ public class BankDriver {
 			break;
 		case 5:
 			BankDriver.applyForAccount();
+			break;
 		case 6:
 			sc.nextLine();
 			break;
@@ -245,10 +242,9 @@ public class BankDriver {
 	}
 
 	private static void applyForAccount() {
-		if (acc.isApproved() == false) {
-			unapproved.add(user);
-		}
 
+		//TODO append an account and username to unapproved list
+		System.out.println("Your application request is now on file");
 	}
 
 	private static void printLoginMenu(User user, Scanner sc) {
@@ -263,7 +259,7 @@ public class BankDriver {
 			choice = sc.nextInt();
 
 			if (choice < 1 || choice > 2) {
-				System.out.println("Incorrect input. Select 1-5.");
+				System.out.println("Incorrect input. Select 1-2.");
 			}
 		} while (choice < 1 || choice > 2);
 
@@ -274,6 +270,7 @@ public class BankDriver {
 		case 2:
 			sc.nextLine();
 			break;
+
 		}
 
 		if (choice != 2) {
@@ -301,7 +298,7 @@ public class BankDriver {
 
 		bank.addUser(username, pin);
 
-		System.out.println(bank.getUsers());
+		// System.out.println(bank.getUsers());
 
 //		Bank bank = new Bank("Bank of Khang");
 //		User user = bank.addUser("khang", "password", "1234");
