@@ -12,11 +12,46 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.revature.models.Bank;
+import com.revature.models.BankAccount;
 import com.revature.models.User;
 
 public class UserServices {
 
 	private static final String FILENAME = "bank_user.dat";
+
+	public ArrayList<User> readUser(ArrayList<User> list, Bank bank) {
+
+		ArrayList<User> bankUser = bank.getUsers();
+		FileInputStream fileIn = null;
+		ObjectInputStream in = null;
+
+		try {
+			fileIn = new FileInputStream(FILENAME);
+
+			in = new ObjectInputStream(fileIn);
+
+			bankUser = (ArrayList<User>) in.readObject();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return bankUser;
+
+	}
 
 	public User readUser() {
 
@@ -77,20 +112,30 @@ public class UserServices {
 
 	}
 
-	public User apply(String userName, String password) {
-		User user = new User(userName, password, false);
-		System.out.println("New application for.. " + userName + " password = " + user.getPassword());
+	public void writeUser(ArrayList<BankAccount> accounts) {
+		FileOutputStream fileOut = null;
+		try {
+			fileOut = new FileOutputStream(FILENAME);
 
-		return user;
-	}
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-	public User[] applyForJointAccount(String userName, String password, String userName2, String password2) {
-		User[] users = new User[1];
-		users[0] = new User(userName, password, false);
-		users[1] = new User(userName2, password2, false);
-		System.out.println("New joint application for.. " + users[0] + " and " + users[1]);
+			out.writeObject(accounts);
 
-		return users;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		} finally {
+			if (fileOut != null) {
+				try {
+					fileOut.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 
 }

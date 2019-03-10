@@ -13,8 +13,10 @@ public class BankDriver {
 
 	public static void main(String[] args) {
 
-		UserServices userService;
+		UserServices userService = new UserServices();
 		Scanner sc = new Scanner(System.in);
+		userService.writeUser(bank.getAccounts());
+		
 
 		bank.addUser("khang", "1234");
 
@@ -243,7 +245,7 @@ public class BankDriver {
 
 	private static void applyForAccount() {
 
-		//TODO append an account and username to unapproved list
+		// TODO append an account and username to unapproved list
 		System.out.println("Your application request is now on file");
 	}
 

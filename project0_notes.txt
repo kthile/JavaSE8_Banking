@@ -1,19 +1,19 @@
 Create a program that simulates banking transactions
 
-- User interaction done with scanner
-- Users should be able to register with a username and password
-	* MUST be able to apply for joint account
-- Users should be able to withdraw, deposit, and transfer funds between accounts
-	* Validate for negative amounts, overdrawing, etc.
-- Employees should be able to view customer info
+- DONE:: User interaction done with scanner 
+- DONE:: Users should be able to register with a username and password
+	NOT DONE:: * MUST be able to apply for joint account
+- DONE:: Users should be able to withdraw, deposit, and transfer funds between accounts
+	NOT DONE:: * Validate for negative amounts, overdrawing, etc.
+- DONE:: Employees should be able to view customer info
 	* Account info
 	* Account balance
 	* Personal info
-- Employees should be able to approve or deny applications for accounts
-- Bank admins should be able to view and edit ALL accounts
+- NOT DONE :: Employees should be able to approve or deny applications for accounts
+- NOT DONE :: Bank admins should be able to view and edit ALL accounts
 	* Approve/denying accounts
 	* Withdrwaing, depositing, transferring from all accounts
 	* Cancelling accounts
-- Use file i/o to pass info
-- 100% test coverage is expected with J-Unit
-- Use Log4j to log transactions
+- NOT DONE :: Use file i/o to pass info
+- HOW IS THIS EVEN POSSIBLE :: 100% test coverage is expected with J-Unit
+- NOT DONE :: Use Log4j to log transactions

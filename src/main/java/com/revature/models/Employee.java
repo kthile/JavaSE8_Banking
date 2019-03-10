@@ -6,7 +6,7 @@ public class Employee extends User {
 	private boolean approved = true;
 
 	public Employee(String username, String password, boolean approved, String pin, Bank bank) {
-		super(username, password, approved, pin, bank);
+		super(username, approved, pin, bank);
 	}
 
 	public void setApproved(boolean approved) {
