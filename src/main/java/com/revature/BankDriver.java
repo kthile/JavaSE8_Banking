@@ -6,19 +6,19 @@ import java.util.Scanner;
 import com.revature.models.*;
 import com.revature.services.*;
 
+
 public class BankDriver {
 
 	static Bank bank = new Bank("Bank of Khang");
 	static UserServices userService = new UserServices();
-	static List<User> list = new ArrayList<>();
-	static List<BankAccount> bankList = new ArrayList<>();
+	static List<User> list = new ArrayList<User>();
+	static List<BankAccount> bankList = new ArrayList<BankAccount>();
+	static LoggingService log;
 
 	public static void main(String[] args) {
 
 		User user = new User();
 		Scanner sc = new Scanner(System.in);
-
-		bank.addUser("khang", "1234");
 
 		while (true) {
 			BankDriver.printLoginMenu(user, sc);
@@ -62,9 +62,12 @@ public class BankDriver {
 				System.out.println("Enter an amount to transfer (max:" + "$" + acctBal + ")");
 				amount = sc.nextDouble();
 				if (amount <= 0) {
-					System.out.println("Amount must be greater than 0");
+					// System.out.println("Amount must be greater than 0");
+					log.logError("Amount must be greater than 0");
 				} else if (amount > acctBal) {
-					System.out.println("Amount must be less than your total balance:$" + acctBal);
+					// System.out.println("Amount must be less than your total balance:$" +
+					// acctBal);
+					log.logError("Amount should be less than your total balance:$" + acctBal);
 				}
 			} while (amount < 0 || amount > acctBal);
 
@@ -88,7 +91,7 @@ public class BankDriver {
 					"Enter a number (1-" + user.numAccounts() + ")" + " for the account associated to deposit into");
 			toAccount = sc.nextInt() - 1;
 			if (toAccount < 0 || toAccount >= user.numAccounts()) {
-				System.out.println("Invalid account.");
+				log.logError("Invalid account");
 			}
 
 		} while (toAccount < 0 || toAccount >= user.numAccounts());
@@ -99,7 +102,7 @@ public class BankDriver {
 			System.out.println("Enter an amount to deposit (balance:" + "$" + user.getAccountBalance(toAccount) + ")");
 			amount = sc.nextDouble();
 			if (amount <= 0) {
-				System.out.println("Amount must be greater than 0");
+				log.logError("Amount must be greater than 0");
 			}
 		} while (amount < 0);
 
@@ -138,7 +141,7 @@ public class BankDriver {
 			System.out.println("Enter an amount to withdraw (balance:" + "$" + acctBal + ")");
 			amount = sc.nextDouble();
 			if (amount <= 0) {
-				System.out.println("Amount must be greater than 0");
+				log.logError("Amount must be greater than 0");
 			} else if (amount > acctBal) {
 				System.out.println("Amount must be less than your total balance:$" + acctBal);
 			}
@@ -178,21 +181,21 @@ public class BankDriver {
 
 		do {
 			System.out.println("WELCOME TO " + bank.getName());
-//			System.out.println("Enter your id: ");
-//			userName = sc.nextLine();
-//			System.out.println("Enter your pin: ");
-//			pin = sc.nextLine();
 
 			System.out.println("Enter your username: ");
 			userName = sc.nextLine();
-			System.out.println("Enter your pin: ");
+			if (userName.length() > 10) {
+				log.logError("Username can't be over 10 characters");
+			}
+			System.out.println("Enter your password: ");
 			pin = sc.nextLine();
+			if (pin.length() > 10) {
+				log.logError("Password can't be over 10 characters");
+			}
 
-			// get user object same as entered uid and pin
-//			user = bank.userLogin(userName, pin);
 			user = bank.userLoginWithUsername(userName, pin);
 			if (user == null) {
-				System.out.println("Invalid user id or pin\n");
+				log.logError("Invalid user id or password\n");
 			}
 
 		} while (user == null);
@@ -221,7 +224,7 @@ public class BankDriver {
 			choice = sc.nextInt();
 
 			if (choice < 1 || choice > 6) {
-				System.out.println("Incorrect input. Select 1-6.");
+				log.logError("Incorrect input. Select-16");
 			}
 		} while (choice < 1 || choice > 6);
 
@@ -253,7 +256,6 @@ public class BankDriver {
 
 	private static void applyForAccount() {
 
-		// TODO append an account and username to unapproved list
 		System.out.println("Your application request is now on file");
 	}
 
@@ -269,7 +271,7 @@ public class BankDriver {
 			choice = sc.nextInt();
 
 			if (choice < 1 || choice > 2) {
-				System.out.println("Incorrect input. Select 1-2.");
+				log.logError("Incorrect input. Select 1-2.");
 			}
 		} while (choice < 1 || choice > 2);
 
@@ -288,16 +290,21 @@ public class BankDriver {
 	}
 
 	private static void registerUser(User user, Scanner sc) {
-		// write to file
-		// show this menu again
 		String username;
 		String pin;
 		System.out.println("Welcome, lets make your account!");
 		System.out.println("What will your username be? (Max 10 characters)");
 		username = sc.next();
-		System.out.println("What will your pin be? (Max 4 characters)");
+		if (username.length() > 10) {
+			log.logError("Username should not be over 10");
+		}
+		System.out.println("What will your password be? (Max 10 characters)");
 		pin = sc.next();
-		System.out.println("We will start you off with an empty checking and savings account for now " + username + "\n");
+		if (pin.length() > 10) {
+			log.logError(pin);
+		}
+		System.out
+				.println("We will start you off with an empty checking and savings account for now " + username + "\n");
 
 		user = new User(username, false, pin, bank);
 		BankAccount account = new BankAccount(BankAccount.getAccountNumber(), 0, user, bank, "Checking", false);
@@ -308,7 +315,7 @@ public class BankDriver {
 		list.add(user);
 
 		userService.writeUser(list);
-		System.out.println(userService.readUser(bank.getUsers(), bank));
+		System.out.println("Your info: " + userService.readUser(bank.getUsers(), bank) + "\n");
 
 	}
 

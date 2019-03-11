@@ -11,8 +11,8 @@ public class BankAccount implements Serializable {
 	 */
 	private static final long serialVersionUID = -1777976254250431253L;
 	protected static String accountNumber; // should be arraylist
-	protected static double balance;
-	protected static User user;
+	protected  double balance;
+	protected  User user;
 	private String uuid;
 	private ArrayList<Transaction> transactions;
 	private String type;
@@ -115,6 +115,7 @@ public class BankAccount implements Serializable {
 		return approved;
 	}
 
+	
 //	@Override
 //	public String toString() {
 //		return "Account [accountNumber=" + accountNumber + ", balance=" + balance + ", user=" + this.user + "]";
