@@ -1,8 +1,9 @@
 package com.revature.models;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Transaction {
+public class Transaction implements Serializable{
 
 	private double amount;
 	private Date timestamp;

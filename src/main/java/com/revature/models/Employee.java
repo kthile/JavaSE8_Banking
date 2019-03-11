@@ -2,6 +2,10 @@ package com.revature.models;
 
 public class Employee extends User {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1391931072366301535L;
 	private int accessLevel;
 	private boolean approved = true;
 

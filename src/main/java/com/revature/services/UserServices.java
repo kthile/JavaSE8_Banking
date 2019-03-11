@@ -86,14 +86,14 @@ public class UserServices {
 
 	}
 
-	public void writeUser(User bankUser) {
+	public void writeUser(List<User> list) {
 		FileOutputStream fileOut = null;
 		try {
 			fileOut = new FileOutputStream(FILENAME);
 
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
-			out.writeObject(bankUser);
+			out.writeObject(list);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -112,7 +112,7 @@ public class UserServices {
 
 	}
 
-	public void writeUser(ArrayList<BankAccount> accounts) {
+	public void writeUser(ArrayList<User> accounts) {
 		FileOutputStream fileOut = null;
 		try {
 			fileOut = new FileOutputStream(FILENAME);

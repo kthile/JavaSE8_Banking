@@ -1,10 +1,15 @@
 package com.revature.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Bank {
+public class Bank implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6860410779513019938L;
 	private String name;
 	private ArrayList<User> users;
 	private ArrayList<BankAccount> accounts;
@@ -131,7 +136,7 @@ public class Bank {
 
 		return user;
 	}
-	
+
 	public User addUser(String userName, String pin) {
 		User user = new User(userName, false, pin, this);
 		users.add(user);
@@ -150,18 +155,27 @@ public class Bank {
 	 * @param pin
 	 * @return
 	 */
-	public User userLogin(String userName, String pin) {
-		for (User u : this.users) {
-			if (u.getUuid().equals(userName) && u.validatePin(pin)) {
-				return u;
-			}
-		}
-		return null;
-	}
-	
+//	public User userLogin(String userName, String pin) {
+//		for (User u : this.users) {
+//			if (u.getUuid().equals(userName) && u.validatePin(pin)) {
+//				return u;
+//			}
+//		}
+//		return null;
+//	}
+
+//	public User userLogin(String userName, String pin) {
+//		for (User u : this.users) {
+//			if (u.getUuid().equals(userName) && u.getPin.equals(pin)) {
+//				return u;
+//			}
+//		}
+//		return null;
+//	}
+
 	public User userLoginWithUsername(String userName, String pin) {
 		for (User u : this.users) {
-			if (u.getUserName().equals(userName) && u.validatePin(pin)) {
+			if (u.getUserName().equals(userName) && u.getPin().contentEquals(pin)) {
 				return u;
 			}
 		}

@@ -16,22 +16,29 @@ public class User implements Serializable {
 	protected String username;
 	protected transient String password;
 	private int accessLevel = 1;
-	private byte pinHash[];
+	//private byte pinHash[];
 	private ArrayList<BankAccount> accounts;
 	private String uuid;
+	private String pin;
+	private boolean approved;
+	private Bank bank;
 
+	public User() {
+		
+	}
 	public User(String userName, String password, String pin, Bank bank) {
 		super();
 		this.username = userName;
 		this.password = password;
 
-		// md5 hashing
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			this.pinHash = md.digest(pin.getBytes());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+//		// md5 hashing
+//		try {
+//			MessageDigest md = MessageDigest.getInstance("MD5");
+//			this.pinHash = md.digest(pin.getBytes());
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
+		this.pin = pin;
 
 		// generate a uuid
 		// this.uuid = bank.getNewUserUUID();
@@ -44,14 +51,17 @@ public class User implements Serializable {
 	public User(String userName, boolean approved, String pin, Bank bank) {
 		super();
 		this.username = userName;
+		this.approved = approved;
+		this.pin = pin;
+		this.bank = bank;
 
 		// md5 hashing
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			this.pinHash = md.digest(pin.getBytes());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			MessageDigest md = MessageDigest.getInstance("MD5");
+//			this.pinHash = md.digest(pin.getBytes());
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
 		this.accounts = new ArrayList<BankAccount>();
 		//System.out.println("Registration success! Your username is: " + this.getUserName());
 
@@ -82,13 +92,13 @@ public class User implements Serializable {
 
 	}
 
-	public byte[] getPinHash() {
-		return pinHash;
-	}
+//	public byte[] getPinHash() {
+//		return pinHash;
+//	}
 
-	public void setPinHash(byte[] pinHash) {
-		this.pinHash = pinHash;
-	}
+//	public void setPinHash(byte[] pinHash) {
+//		this.pinHash = pinHash;
+//	}
 
 	public ArrayList<BankAccount> getAccounts() {
 		return accounts;
@@ -120,16 +130,18 @@ public class User implements Serializable {
 	 * @param pin
 	 * @return
 	 */
-	public boolean validatePin(String pin) {
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			return MessageDigest.isEqual(md.digest(pin.getBytes()), this.pinHash);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
+//	public boolean validatePin(String pin) {
+//		try {
+////			MessageDigest md = MessageDigest.getInstance("MD5");
+////			return MessageDigest.isEqual(md.digest(pin.getBytes()), this.pinHash);
+//		} catch (NoSuchAlgorithmException e) {
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
 
+	
+	
 	/**
 	 * Print all account information
 	 */
@@ -139,6 +151,14 @@ public class User implements Serializable {
 			System.out.printf("%d) %s\n", i + 1, this.accounts.get(i).getSummaryLine());
 		}
 		System.out.println();
+	}
+
+	public String getPin() {
+		return pin;
+	}
+
+	public void setPin(String pin) {
+		this.pin = pin;
 	}
 
 	/**
@@ -168,13 +188,10 @@ public class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", accounts=" + accounts + "]";
+		return "User [username=" + username + ", accessLevel=" + accessLevel + ", accounts=" + accounts + ", uuid="
+				+ uuid + ", pin=" + pin + "]";
 	}
 
-//	@Override
-//	public String toString() {
-//		return "Users [userName=" + userName + ", password=" + password + ", accessLevel=" + accessLevel + "approved="
-//				+ approved + "]";
-//	}
+
 
 }

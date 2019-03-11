@@ -1,10 +1,15 @@
 package com.revature.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import com.revature.services.UserServices;
 
-public class BankAccount {
+public class BankAccount implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1777976254250431253L;
 	protected static String accountNumber; // should be arraylist
 	protected static double balance;
 	protected static User user;
@@ -88,7 +93,8 @@ public class BankAccount {
 
 	@Override
 	public String toString() {
-		return "BankAccount [uuid=" + uuid + ", transactions=" + transactions + "]";
+		return "BankAccount [uuid=" + uuid + ", transactions=" + transactions + ", type=" + type + ", approved="
+				+ approved + "]";
 	}
 
 	public void printTransHistory() {

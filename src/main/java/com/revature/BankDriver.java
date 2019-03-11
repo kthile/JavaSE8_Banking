@@ -9,18 +9,17 @@ import com.revature.services.*;
 public class BankDriver {
 
 	static Bank bank = new Bank("Bank of Khang");
-	static User user;
+	static UserServices userService = new UserServices();
+	static List<User> list = new ArrayList<>();
+	static List<BankAccount> bankList = new ArrayList<>();
 
 	public static void main(String[] args) {
 
-		UserServices userService = new UserServices();
+		User user = new User();
 		Scanner sc = new Scanner(System.in);
-		userService.writeUser(bank.getAccounts());
-		
 
 		bank.addUser("khang", "1234");
 
-		// User curUser;
 		while (true) {
 			BankDriver.printLoginMenu(user, sc);
 			BankDriver.mainMenuPrompt(sc);
@@ -34,42 +33,45 @@ public class BankDriver {
 		int toAccount;
 		double amount;
 		double acctBal;
+		for (int i = 0; i < list.size(); i++) {
+			user = list.get(0);
 
-		// account to transfer from
-		do {
-			System.out.println(
-					"Enter a number (1-" + user.numAccounts() + ")" + " for the account associated to transfer from");
-			fromAccount = sc.nextInt() - 1;
-			if (fromAccount < 0 || fromAccount >= user.numAccounts())
-				;
+			// account to transfer from
+			do {
+				System.out.println("Enter a number (1-" + user.numAccounts() + ")"
+						+ " for the account associated to transfer from");
+				fromAccount = sc.nextInt() - 1;
+				if (fromAccount < 0 || fromAccount >= user.numAccounts())
+					;
 
-		} while (fromAccount < 0 || fromAccount >= user.numAccounts());
-		acctBal = user.getAccountBalance(fromAccount);
+			} while (fromAccount < 0 || fromAccount >= user.numAccounts());
+			acctBal = user.getAccountBalance(fromAccount);
 
-		// account to transfer into
-		do {
-			System.out.println(
-					"Enter a number (1-" + user.numAccounts() + ")" + " for the account associated to transfer to");
-			toAccount = sc.nextInt() - 1;
-			if (toAccount < 0 || toAccount >= user.numAccounts())
-				;
+			// account to transfer into
+			do {
+				System.out.println(
+						"Enter a number (1-" + user.numAccounts() + ")" + " for the account associated to transfer to");
+				toAccount = sc.nextInt() - 1;
+				if (toAccount < 0 || toAccount >= user.numAccounts())
+					;
 
-		} while (toAccount < 0 || toAccount >= user.numAccounts());
+			} while (toAccount < 0 || toAccount >= user.numAccounts());
 
-		// amount to transfer
-		do {
-			System.out.println("Enter an amount to transfer (max:" + "$" + acctBal + ")");
-			amount = sc.nextDouble();
-			if (amount <= 0) {
-				System.out.println("Amount must be greater than 0");
-			} else if (amount > acctBal) {
-				System.out.println("Amount must be less than your total balance:$" + acctBal);
-			}
-		} while (amount < 0 || amount > acctBal);
+			// amount to transfer
+			do {
+				System.out.println("Enter an amount to transfer (max:" + "$" + acctBal + ")");
+				amount = sc.nextDouble();
+				if (amount <= 0) {
+					System.out.println("Amount must be greater than 0");
+				} else if (amount > acctBal) {
+					System.out.println("Amount must be less than your total balance:$" + acctBal);
+				}
+			} while (amount < 0 || amount > acctBal);
 
-		// subtract from one account then add to the other
-		user.addAccountTransaction(fromAccount, -1 * amount, "Transfer to account:" + user.getAcctUuid(toAccount));
-		user.addAccountTransaction(toAccount, amount, "Transfer to account:" + user.getAcctUuid(fromAccount));
+			// subtract from one account then add to the other
+			user.addAccountTransaction(fromAccount, -1 * amount, "Transfer to account:" + user.getAcctUuid(toAccount));
+			user.addAccountTransaction(toAccount, amount, "Transfer to account:" + user.getAcctUuid(fromAccount));
+		}
 
 	}
 
@@ -78,6 +80,7 @@ public class BankDriver {
 		double amount;
 		double acctBal;
 		String memo;
+		user = list.get(0);
 
 		// account to transfer into
 		do {
@@ -117,6 +120,8 @@ public class BankDriver {
 		double acctBal;
 		String memo;
 
+		user = list.get(0);
+
 		// account to transfer from
 		do {
 			System.out.println(
@@ -130,7 +135,7 @@ public class BankDriver {
 
 		// amount to transfer
 		do {
-			System.out.println("Enter an amount to transfer (balance:" + "$" + acctBal + ")");
+			System.out.println("Enter an amount to withdraw (balance:" + "$" + acctBal + ")");
 			amount = sc.nextDouble();
 			if (amount <= 0) {
 				System.out.println("Amount must be greater than 0");
@@ -151,6 +156,9 @@ public class BankDriver {
 
 	public static void showTransHistory(User user, Scanner sc) {
 		int accountChoice;
+
+		user = list.get(0);
+
 		// get all transaction history to look at
 		do {
 			System.out.println("Enter a number (1-" + user.numAccounts() + ")" + " for the account associated");
@@ -166,7 +174,7 @@ public class BankDriver {
 	private static User mainMenuPrompt(Scanner sc) {
 		String userName;
 		String pin;
-		// User user;
+		User user;
 
 		do {
 			System.out.println("WELCOME TO " + bank.getName());
@@ -196,12 +204,12 @@ public class BankDriver {
 	// TODO make this function employees only
 	private static void printUserMenu(User user, Scanner sc) {
 		// print user account summary
-		user.printAccounts();
+		list.get(0).printAccounts();
 		int choice;
 
 		// user menu
 		do {
-			System.out.println("Welcome " + user.getUserName() + ". What would you like to do?");
+			System.out.println("Welcome " + list.get(0).getUserName() + ". What would you like to do?");
 			System.out.println(" 1. Show transaction history ");
 			System.out.println(" 2. Withdraw ");
 			System.out.println(" 3. Deposit ");
@@ -213,7 +221,7 @@ public class BankDriver {
 			choice = sc.nextInt();
 
 			if (choice < 1 || choice > 6) {
-				System.out.println("Incorrect input. Select 1-5.");
+				System.out.println("Incorrect input. Select 1-6.");
 			}
 		} while (choice < 1 || choice > 6);
 
@@ -272,7 +280,6 @@ public class BankDriver {
 		case 2:
 			sc.nextLine();
 			break;
-
 		}
 
 		if (choice != 2) {
@@ -281,69 +288,28 @@ public class BankDriver {
 	}
 
 	private static void registerUser(User user, Scanner sc) {
-		// create a new user
-		// let them know it has been created
 		// write to file
 		// show this menu again
 		String username;
 		String pin;
-		BankAccount account = null;
-
 		System.out.println("Welcome, lets make your account!");
 		System.out.println("What will your username be? (Max 10 characters)");
 		username = sc.next();
 		System.out.println("What will your pin be? (Max 4 characters)");
 		pin = sc.next();
-		System.out.println("We will start you off with an empty checking account for now " + username + "\n");
+		System.out.println("We will start you off with an empty checking and savings account for now " + username + "\n");
 
 		user = new User(username, false, pin, bank);
-
+		BankAccount account = new BankAccount(BankAccount.getAccountNumber(), 0, user, bank, "Checking", false);
+		BankAccount savings = new BankAccount(BankAccount.getAccountNumber(), 0, user, bank, "Savings", false);
+		user.addAccount(account);
+		user.addAccount(savings);
 		bank.addUser(username, pin);
+		list.add(user);
 
-		// System.out.println(bank.getUsers());
-
-//		Bank bank = new Bank("Bank of Khang");
-//		User user = bank.addUser("khang", "password", "1234");
-//		UserServices userService;
-//
-//		BankAccount account = new BankAccount(BankAccount.getAccountNumber(), 0, user, bank, "Checking");
-//		bank.addAccount(account);
+		userService.writeUser(list);
+		System.out.println(userService.readUser(bank.getUsers(), bank));
 
 	}
 
 }
-
-/*
- * 
- * 
- * Scanner sc = new Scanner(System.in); UserServices userService = new
- * UserServices(); List<User> userList = new ArrayList<>(); int i = 0;
- * 
- * while (sc.hasNext()) {
- * System.out.println("****WELCOME TO THE BANK OF KHANG*****");
- * System.out.println("====================================="); System.out.
- * println("Are you 1.Applying alone, 2.Applying for a joint account, 3.Or logging in?"
- * ); System.out.println("Enter an answer(1-3)");
- * 
- * int answer = sc.nextInt(); if (answer == 1) { // TODO Registration logic
- * System.out.println("Username: "); String userName = sc.next();
- * System.out.println("Password: "); String password = sc.next();
- * 
- * User user = userService.apply(userName, password); userList.add(user);
- * userService.writeUser(userList.get(i));
- * 
- * System.out.println(userService.readUser());
- * 
- * } else if (answer == 2) { // joint account logic
- * 
- * } else { // TODO account verification logic System.out.println("Username: ");
- * String userName = sc.next(); System.out.println("Password: "); String
- * password = sc.next();
- * System.out.println("What would you like to do today? "); System.out.
- * println("I want to.. 1.View my account information, 2.Make a deposit, 3.Make a withdrawal "
- * ); System.out.println("Enter an answer(1-3)"); int choice = sc.nextInt(); if
- * (choice == 1) { // show account information } else if (choice == 2) { // make
- * a deposit } else { // make a withdrawal } sc.close(); }
- * 
- * }
- */
